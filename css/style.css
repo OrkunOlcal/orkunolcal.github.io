@@ -18,11 +18,21 @@
 
 .icon-3d {
   padding: 10px;
-  -webkit-animation: icon3d 200ms 10;
-  animation: icon3d 200ms 10;
   color: #fff;
+  opacity: 0;
+  -webkit-animation: icon-in 500ms ease-out both, icon3d 200ms 2 both;
+  animation: icon-in 500ms ease-out forwards, icon3d 200ms 2 forwards;
+  animation-delay: calc(3s + var(--i, 0) * 180ms), 4.9s;
+}
+.links a { --i: 0; }
+.links a .icon-3d { animation-delay: calc(3s + var(--i) * 180ms), 4.9s; }
+
+@keyframes icon-in {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 .icon-3d:hover {
+  opacity: 1;
   -webkit-animation: icon3d 200ms infinite;
   animation: icon3d 200ms infinite;
 }
@@ -55,11 +65,13 @@
   margin: 0 auto; /* Gives that scrolling effect as the typing happens */
   letter-spacing: .15em; /* Adjust as needed */
   -webkit-animation: 
-    typing 4.5s steps(30, end),
-    blink-caret 0.9s step-end infinite;
+    typing 1.8s steps(11, end) 0.5s backwards,
+    blink-caret 0.9s step-end 0.5s 5 forwards,
+    name-glitch 800ms steps(1, end) 2.3s;
           animation: 
-    typing 4.5s steps(30, end),
-    blink-caret 0.9s step-end infinite;
+    typing 1.8s steps(11, end) 0.5s backwards,
+    blink-caret 0.9s step-end 0.5s 5 forwards,
+    name-glitch 800ms steps(1, end) 2.3s;
 }
 
 /* The typing effect */
@@ -80,4 +92,17 @@
 @keyframes blink-caret {
   from, to { border-color: transparent }
   50% { border-color: orange }
+}
+
+/* Glitch burst on the name right after typing finishes */
+@keyframes name-glitch {
+  0%   { text-shadow: 5px 4px #f44336, -5px -4px #2196f3; }
+  25%  { text-shadow: -5px -6px #f44336, 5px 6px #2196f3; }
+  50%  { text-shadow: 5px -4px #f44336, -5px 4px #2196f3; }
+  75%  { text-shadow: -8px -4px #f44336, 8px 4px #2196f3; }
+  100% { text-shadow: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .icon-3d, .typewriter h6 { animation: none !important; opacity: 1; }
 }
